@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqxkbn7wdtxbh"]
+
+[ext_resource type="Script" path="res://scripts/Game.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://cu67ms040xq8s" path="res://scenes/HUD.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://b7to0tqxj70f1" path="res://assets/TilesAtlasTexture.tres" id="4_5tm1g"]
+[ext_resource type="Texture2D" uid="uid://b774l0h8d8cr8" path="res://assets/backgroun_1.png" id="5_da7fv"]
+[ext_resource type="PackedScene" uid="uid://cnsqy51dc353r" path="res://scenes/Player.tscn" id="8"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4xydv"]
+resource_name = "Solid"
+texture = ExtResource("4_5tm1g")
+texture_region_size = Vector2i(64, 64)
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:0/next_alternative_id = 4
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/next_alternative_id = 2
+3:0/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+0:3/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_saevm"]
+tile_shape = 1
+tile_layout = 5
+tile_offset_axis = 1
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_4xydv")
+
+[sub_resource type="Curve2D" id="1"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1")
+
+[node name="HUD" parent="." instance=ExtResource("2")]
+
+[node name="GroundTileMap" type="TileMap" parent="."]
+y_sort_enabled = true
+position = Vector2(-32, 0)
+tile_set = SubResource("TileSet_saevm")
+format = 2
+layer_0/name = "BaseLayer"
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(0, 1, 0)
+layer_1/name = "Background"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = true
+layer_1/y_sort_origin = 0
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array()
+
+[node name="Player" parent="." instance=ExtResource("8")]
+
+[node name="Path2D" type="Path2D" parent="."]
+visible = false
+curve = SubResource("1")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+rotates = false
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D"]
+remote_path = NodePath("../../../Player")
+update_rotation = false
+update_scale = false
+
+[node name="Backgroun1" type="Sprite2D" parent="."]
+position = Vector2(-34, 49)
+texture = ExtResource("5_da7fv")
+
+[connection signal="gameover" from="." to="Player" method="_on_gameover"]
+[connection signal="gameplay_timeout" from="HUD" to="." method="_on_HUD_gameplay_timeout"]

@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://cu67ms040xq8s"]
+
+[ext_resource type="FontFile" uid="uid://b0smndqf5vp3u" path="res://assets/fonts/BoxyBold_16px.fnt" id="1"]
+[ext_resource type="Script" path="res://scripts/ScoreLabel.gd" id="4"]
+[ext_resource type="Texture2D" uid="uid://d1tiuohxvjnpk" path="res://assets/progress_bar_bg.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://ckmfhet8ovwt0" path="res://assets/progress_bar_fg.png" id="6"]
+[ext_resource type="Script" path="res://scripts/HeadupDisplay.gd" id="7"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("7")
+
+[node name="ScoreLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 7.0
+offset_right = 10.0
+offset_bottom = 30.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("1")
+text = "0"
+script = ExtResource("4")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 8.0
+offset_right = 32.0
+offset_bottom = 16.0
+value = 60.0
+texture_under = ExtResource("5")
+texture_progress = ExtResource("6")
+
+[connection signal="value_changed" from="TextureProgressBar" to="." method="_on_TextureProgress_value_changed"]

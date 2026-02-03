@@ -1,0 +1,16 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://bqsa2cobnxgv"
+path="res://.godot/imported/BoxyBold_32px.fnt-b49a6357fc385a8515dd4aede5995263.fontdata"
+
+[deps]
+
+source_file="res://assets/fonts/BoxyBold_32px.fnt"
+dest_files=["res://.godot/imported/BoxyBold_32px.fnt-b49a6357fc385a8515dd4aede5995263.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true

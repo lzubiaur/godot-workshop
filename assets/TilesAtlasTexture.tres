@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://b7to0tqxj70f1"]
+
+[ext_resource type="Texture2D" uid="uid://byacc4rs5lb22" path="res://assets/isometric-ground-pack.png" id="1_slg2h"]
+
+[resource]
+atlas = ExtResource("1_slg2h")
+region = Rect2(0, 8, 256, 256)

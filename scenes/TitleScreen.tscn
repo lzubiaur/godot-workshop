@@ -1,0 +1,83 @@
+[gd_scene load_steps=16 format=3 uid="uid://bfrwm0dvl3367"]
+
+[ext_resource type="Script" path="res://scripts/TitleScreen.gd" id="1_jmw2m"]
+[ext_resource type="Texture2D" uid="uid://dd2pr0o46xamy" path="res://assets/title_screen_1.png" id="1_twc2f"]
+[ext_resource type="Texture2D" uid="uid://cbwltmg0b5ft" path="res://assets/idle/idle_01.png" id="3_7d7sw"]
+[ext_resource type="Texture2D" uid="uid://bp5g7r1hji1y6" path="res://assets/idle/idle_02.png" id="4_576qr"]
+[ext_resource type="Texture2D" uid="uid://dtqq7youtiiph" path="res://assets/idle/idle_03.png" id="5_vu67x"]
+[ext_resource type="Texture2D" uid="uid://4vf54at7a57d" path="res://assets/jump/01.png" id="6_sgj28"]
+[ext_resource type="Texture2D" uid="uid://b2smrc887kmf2" path="res://assets/jump/02.png" id="7_uioui"]
+[ext_resource type="Texture2D" uid="uid://dahgdnskc2r62" path="res://assets/jump/03.png" id="8_ngk6j"]
+[ext_resource type="Texture2D" uid="uid://qj7mwntkq8dg" path="res://assets/jump/04.png" id="9_3uh3r"]
+[ext_resource type="Texture2D" uid="uid://8e5q2mo05a4k" path="res://assets/jump/05.png" id="10_870rj"]
+[ext_resource type="Texture2D" uid="uid://ch6lrg4scygaq" path="res://assets/jump/06.png" id="11_66gnf"]
+[ext_resource type="Texture2D" uid="uid://dkli8g4wajep" path="res://assets/jump/07.png" id="12_o3e0h"]
+[ext_resource type="Texture2D" uid="uid://colcn6l2wnte6" path="res://assets/jump/08.png" id="13_q73vp"]
+[ext_resource type="Texture2D" uid="uid://jpyjkd5wrux4" path="res://assets/jump/09.png" id="14_taxbf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cajdb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7d7sw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_576qr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_vu67x")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_sgj28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_uioui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ngk6j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_3uh3r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_870rj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_66gnf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_o3e0h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_q73vp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_taxbf")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}]
+
+[node name="TitleScreen" type="Node2D"]
+script = ExtResource("1_jmw2m")
+
+[node name="BackgroundSprite" type="Sprite2D" parent="."]
+position = Vector2(96, 120)
+scale = Vector2(-0.2, 0.314286)
+texture = ExtResource("1_twc2f")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(105, 229)
+sprite_frames = SubResource("SpriteFrames_cajdb")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -20)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite2D")

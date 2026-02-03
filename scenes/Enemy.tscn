@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://cwqh17fwsal8h"]
+
+[ext_resource type="Texture2D" uid="uid://bh7hy1fjjeubl" path="res://assets/crab_sprite_sheet.png" id="1"]
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://dr6rwlust63j6" path="res://assets/shadow.png" id="3"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(8.70277, 4.24873)
+
+[sub_resource type="AtlasTexture" id="2"]
+atlas = ExtResource("1")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="3"]
+atlas = ExtResource("1")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="4"]
+atlas = ExtResource("1")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="5"]
+atlas = ExtResource("1")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="SpriteFrames" id="6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("2")
+}, {
+"duration": 1.0,
+"texture": SubResource("3")
+}, {
+"duration": 1.0,
+"texture": SubResource("4")
+}, {
+"duration": 1.0,
+"texture": SubResource("5")
+}],
+"loop": true,
+"name": &"walking",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D"]
+scale = Vector2(2, 2)
+collision_layer = 2
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+position = Vector2(0.773395, -3.38086)
+scale = Vector2(0.264146, 0.331563)
+texture = ExtResource("3")
+offset = Vector2(-4, 20)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("6")
+animation = &"walking"
+frame = 1
+offset = Vector2(0, -12)
