@@ -48,17 +48,10 @@ func start_game():
 	tiles_gen.pop() # skip the start position cell
 	get_tree().paused = false
 	set_player_look_at(tiles_gen.front())
-	# test_tile_map()
-	
-func test_tile_map():
-	tileMap.set_cell(0, Vector2i(0, 0), 0, Vector2i(0, 0))
-	tileMap.set_cell(0, Vector2i(0, 1), 0, Vector2i(0, 0))
-	tileMap.set_cell(0, Vector2i(0, 1), 0, Vector2i(0, 0))
 
 func on_new_tile(position: Vector2, tileType):
-	print("New cell at ", position, tileType)
 	tileMap.call_deferred('set_cell', 0, position, 0, tile_type_to_atlas_coords(tileType))
-	
+
 func tile_type_to_atlas_coords(tileType: int):
 	match tileType:
 		tiles_gen.TileType.Empty:
@@ -74,8 +67,8 @@ func set_player_look_at(point):
 func on_spawn_enemy(position):
 	var enemy = Enemy.instantiate()
 	enemy.velocity = 50
-	enemy.end = position + Vector2(3, 0)
 	enemy.start = position - Vector2(3, 0)
+	enemy.end = position + Vector2(3, 0)
 	enemy.connect('body_entered', Callable(self, '_on_collided_with_enemy'))
 	tileMap.call_deferred('add_child', enemy)
 
@@ -132,7 +125,7 @@ func start_moving_player_along_path(steps):
 	
 	set_player_look_at(steps.back())
 	player.jump()
-	
+
 func get_next_position_on_path(t: float) -> Vector2:
 	var point_count = path.curve.get_point_count()
 	var point_index = min((point_count * t) + 1, point_count - 1)
