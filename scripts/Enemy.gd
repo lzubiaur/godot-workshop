@@ -21,13 +21,11 @@ func move_along_path():
 	var tween = create_tween()
 	# don't defer setting the position to the next update (tween) or it will enter the scene at 0,0
 	position = p_start
-	print(start, end, length, duration)
 	tween.tween_property(self, 'position', p_end, duration).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_LINEAR)
 	tween.tween_callback(on_move_along_path_callback).set_delay(duration)
 	tween.play()
 
 func on_move_along_path_callback():
-	print("Finished player")
 	emit_signal('finished')
 
 func _set_start(value):

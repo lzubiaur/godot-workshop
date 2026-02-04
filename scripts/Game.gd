@@ -67,9 +67,9 @@ func set_player_look_at(point):
 func on_spawn_enemy(position):
 	var enemy = Enemy.instantiate()
 	enemy.velocity = 50
+	enemy.z_index = 10
 	enemy.start = position - Vector2(3, 0)
 	enemy.end = position + Vector2(3, 0)
-	print("enemy position: ", enemy.start, enemy.end)
 	enemy.connect('body_entered', Callable(self, '_on_collided_with_enemy'))
 	tileMap.call_deferred('add_child', enemy)
 
