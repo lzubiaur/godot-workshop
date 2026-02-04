@@ -14,11 +14,8 @@ func _ready():
 	set_timeout(global.gameplay.idle)
 
 func set_timeout(time):
-	# TODO
-	#$Tween.stop_all()
-	#$Tween.interpolate_property($TextureProgressBar, 'value', (time / global.MAX_IDLE_TIMEOUT) * 100, 0, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	#$Tween.start()
-	null
+	var tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property($TextureProgressBar, "value", 0, time).from((time / global.MAX_IDLE_TIMEOUT) * 100)
 	
 func get_remaining_time():
 	return global.MAX_IDLE_TIMEOUT * ($TextureProgressBar.value / 100)
@@ -30,14 +27,6 @@ func add_extra_time(time):
 func _on_player_step(_step_count):
 	var new_extra_time = extra_time + ((extra_time - min_extra_time) * (1 - global.gameplay.difficulty))
 	add_extra_time(new_extra_time)
-
-# TODO move to Game.gd
-# func _on_level_up(_level):
-#	difficulty = min(1, difficulty + 0.05)
-
-func _on_gameover():
-	# TODO
-	null
 
 func _on_TextureProgress_value_changed(value):
 	if value <= 0:
