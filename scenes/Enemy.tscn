@@ -61,5 +61,5 @@ offset = Vector2(-4, 20)
 sprite_frames = SubResource("6")
 animation = &"walking"
 autoplay = "walking"
-frame_progress = 0.21057
+frame_progress = 0.276865
 offset = Vector2(0, -12)

@@ -16,7 +16,7 @@ var tiles_gen = TilesGenerator.new()
 @onready var tileMap = $GroundTileMap
 
 var isGameover = false
-var isInvicible = true
+var isInvicible = false
 
 var moving = false
 var cached_inputs = {
@@ -163,9 +163,6 @@ func acknowledge_step(step_count):
 		global.high = global.score
 
 func respawn():
-	# TODO
-	# path_tween.stop_all()
-	
 	# for some reasons we have to clear the path before respawn
 	# maybe because baked points are still cached?
 	path.curve.clear_points()

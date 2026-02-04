@@ -4,6 +4,7 @@ extends CanvasLayer
 
 signal gameplay_timeout
 
+@onready var tween
 @onready var idle = global.gameplay.idle
 @onready var extra_time = global.gameplay.extra_time
 @onready var min_extra_time = global.gameplay.min_extra_time
@@ -14,7 +15,9 @@ func _ready():
 	set_timeout(global.gameplay.idle)
 
 func set_timeout(time):
-	var tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	if tween:
+		tween.kill()
+	tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property($TextureProgressBar, "value", 0, time).from((time / global.MAX_IDLE_TIMEOUT) * 100)
 	
 func get_remaining_time():
