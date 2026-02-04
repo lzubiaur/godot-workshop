@@ -103,6 +103,9 @@ func process_inputs() -> Array:
 		acknowledge_step(2)
 		steps.append(tiles_gen.pop())
 		steps.append(tiles_gen.pop())
+		
+	elif Input.is_action_just_pressed("respawn"):
+		respawn()
 	
 	cached_inputs.dash = false
 	cached_inputs.jump = false
