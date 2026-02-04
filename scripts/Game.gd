@@ -16,7 +16,7 @@ var tiles_gen = TilesGenerator.new()
 @onready var tileMap = $GroundTileMap
 
 var isGameover = false
-var isInvicible = false
+var isInvicible = true
 
 var moving = false
 var cached_inputs = {
@@ -69,6 +69,7 @@ func on_spawn_enemy(position):
 	enemy.velocity = 50
 	enemy.start = position - Vector2(3, 0)
 	enemy.end = position + Vector2(3, 0)
+	print("enemy position: ", enemy.start, enemy.end)
 	enemy.connect('body_entered', Callable(self, '_on_collided_with_enemy'))
 	tileMap.call_deferred('add_child', enemy)
 

@@ -60,5 +60,6 @@ offset = Vector2(-4, 20)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("6")
 animation = &"walking"
-frame = 1
+autoplay = "walking"
+frame_progress = 0.381852
 offset = Vector2(0, -12)
