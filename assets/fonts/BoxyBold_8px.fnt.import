@@ -14,3 +14,4 @@ dest_files=["res://.godot/imported/BoxyBold_8px.fnt-69e321f53d31752c96040fe3d5a0
 
 fallbacks=[]
 compress=true
+scaling_mode=2
