@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ctdfodkog1mij"]
+
+[ext_resource type="Texture2D" uid="uid://b774l0h8d8cr8" path="res://assets/cactus.png" id="1_nou1y"]
+[ext_resource type="Texture2D" uid="uid://dn7wacixfgeys" path="res://assets/rock.png" id="2_dnxxv"]
+[ext_resource type="Script" path="res://scripts/Background.gd" id="3_dnxxv"]
+
+[node name="Background" type="Node2D" unique_id=2039309105]
+
+[node name="Cactus" type="Sprite2D" parent="." unique_id=1330852269]
+modulate = Color(0.8283762, 0.9062766, 0.81397945, 1)
+position = Vector2(122, -3)
+texture = ExtResource("1_nou1y")
+
+[node name="Rock" type="Sprite2D" parent="." unique_id=1770876441]
+position = Vector2(-21, 25)
+texture = ExtResource("2_dnxxv")
+script = ExtResource("3_dnxxv")
