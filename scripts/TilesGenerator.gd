@@ -4,7 +4,7 @@ extends Node
 signal new_tile
 signal spawn_enemy
 
-enum TileType { Empty = -1, Ground = 0, Hole = 1 }
+enum TileType { Empty = -1, Ground = 0 }
 const MAX_POOL_SIZE = 20
 
 var pool = []
@@ -33,8 +33,8 @@ func spawn_new_enemy(position):
 		emit_signal("spawn_enemy", position)
 
 func generate_next_tile_type(_pos, prevType):
-	if prevType != TileType.Hole and prevType != TileType.Empty and roll_dice(0.6):
-		return choose(0.7, TileType.Hole, TileType.Empty)
+	if prevType != TileType.Empty and roll_dice(0.6):
+		return TileType.Empty
 	else:
 		return TileType.Ground
 
