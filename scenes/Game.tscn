@@ -3,8 +3,6 @@
 [ext_resource type="Script" uid="uid://cm0vfcjly8wxc" path="res://scripts/Game.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://cu67ms040xq8s" path="res://scenes/HUD.tscn" id="2"]
 [ext_resource type="Texture2D" uid="uid://b7to0tqxj70f1" path="res://assets/TilesAtlasTexture.tres" id="4_5tm1g"]
-[ext_resource type="Texture2D" uid="uid://dn7wacixfgeys" path="res://assets/rock.png" id="5_aug50"]
-[ext_resource type="Texture2D" uid="uid://b774l0h8d8cr8" path="res://assets/cactus.png" id="5_da7fv"]
 [ext_resource type="PackedScene" uid="uid://cnsqy51dc353r" path="res://scenes/Player.tscn" id="8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4xydv"]
@@ -55,14 +53,6 @@ layer_0/tile_data = PackedInt32Array(0, 1, 0)
 layer_1/name = "Background"
 layer_1/y_sort_enabled = true
 layer_1/z_index = 1
-
-[node name="Backgroun1" type="Sprite2D" parent="." unique_id=311055190]
-position = Vector2(41, -60)
-texture = ExtResource("5_da7fv")
-
-[node name="Rock" type="Sprite2D" parent="." unique_id=1430665042]
-position = Vector2(-80, -51)
-texture = ExtResource("5_aug50")
 
 [node name="Player" parent="." unique_id=8240945 instance=ExtResource("8")]
 
