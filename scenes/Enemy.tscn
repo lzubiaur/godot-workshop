@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://cwqh17fwsal8h"]
+[gd_scene format=3 uid="uid://cwqh17fwsal8h"]
 
 [ext_resource type="Texture2D" uid="uid://bh7hy1fjjeubl" path="res://assets/crab_sprite_sheet.png" id="1"]
-[ext_resource type="Script" path="res://scripts/Enemy.gd" id="2"]
+[ext_resource type="Script" uid="uid://bfpuubwx5k7qu" path="res://scripts/Enemy.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dr6rwlust63j6" path="res://assets/shadow.png" id="3"]
 
 [sub_resource type="RectangleShape2D" id="1"]
@@ -43,21 +43,21 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Area2D" type="Area2D"]
+[node name="Area2D" type="Area2D" unique_id=1021152399]
 scale = Vector2(2, 2)
 collision_layer = 2
 script = ExtResource("2")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=127093375]
 shape = SubResource("1")
 
-[node name="Shadow" type="Sprite2D" parent="."]
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1944257638]
 position = Vector2(0.773395, -3.38086)
 scale = Vector2(0.264146, 0.331563)
 texture = ExtResource("3")
 offset = Vector2(-4, 20)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=466403969]
 sprite_frames = SubResource("6")
 animation = &"walking"
 autoplay = "walking"

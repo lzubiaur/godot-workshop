@@ -58,8 +58,17 @@ func tile_type_to_atlas_coords(tileType: int):
 			return Vector2i(-1, -1)
 		tiles_gen.TileType.Ground:
 			return Vector2i(0, 0)
-		tiles_gen.TileType.Hole:  
-			return Vector2i(1, 0)
+		tiles_gen.TileType.Hole:
+			return Vector2i(3, 0)
+
+func atlas_coords_to_tile_type(coords: Vector2i):
+	match coords:
+		Vector2i(-1, -1):
+			return tiles_gen.TileType.Empty 
+		Vector2i(0, 0):
+			return tiles_gen.TileType.Ground
+		Vector2i(3, 0):
+			return tiles_gen.TileType.Hole
 
 func set_player_look_at(point):
 	player.player_look_at(Math.to_iso(point))
@@ -141,7 +150,8 @@ func _on_moving_along_path(value):
 	path_follow.progress_ratio = value
 
 func check_player_position_on_map(position):
-	var tile = tileMap.get_cell_source_id(0, position)
+	var coords = tileMap.get_cell_atlas_coords(0, position)
+	var tile = self.atlas_coords_to_tile_type(coords)
 	if tile == tiles_gen.TileType.Empty or tile == tiles_gen.TileType.Hole:
 		game_over()
 

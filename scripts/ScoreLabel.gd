@@ -8,6 +8,12 @@ func _ready():
 	
 func update_score():
 	text = String.num(global.score)
+	bounce()
 
+func bounce():
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(1.3, 1.3), 0.1)
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.15)
+	
 func _on_player_step(step_count):
 	update_score()
