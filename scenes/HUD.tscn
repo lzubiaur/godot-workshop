@@ -1,15 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://cu67ms040xq8s"]
+[gd_scene format=3 uid="uid://cu67ms040xq8s"]
 
 [ext_resource type="FontFile" uid="uid://b0smndqf5vp3u" path="res://assets/fonts/BoxyBold_16px.fnt" id="1"]
-[ext_resource type="Script" path="res://scripts/ScoreLabel.gd" id="4"]
+[ext_resource type="Script" uid="uid://d3f18ju0l0rut" path="res://scripts/ScoreLabel.gd" id="4"]
 [ext_resource type="Texture2D" uid="uid://d1tiuohxvjnpk" path="res://assets/progress_bar_bg.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://ckmfhet8ovwt0" path="res://assets/progress_bar_fg.png" id="6"]
-[ext_resource type="Script" path="res://scripts/HeadupDisplay.gd" id="7"]
+[ext_resource type="Script" uid="uid://c0qdua0pa05ma" path="res://scripts/HeadupDisplay.gd" id="7"]
 
-[node name="HUD" type="CanvasLayer"]
+[node name="HUD" type="CanvasLayer" unique_id=61315016]
 script = ExtResource("7")
 
-[node name="ScoreLabel" type="Label" parent="."]
+[node name="ScoreLabel" type="Label" parent="." unique_id=982684042]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -22,7 +22,7 @@ theme_override_fonts/font = ExtResource("1")
 text = "0"
 script = ExtResource("4")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="." unique_id=1506562699]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -34,4 +34,40 @@ value = 60.0
 texture_under = ExtResource("5")
 texture_progress = ExtResource("6")
 
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=493319444]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=434609686]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/Control" unique_id=1357819647]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -80.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Button2" type="Button" parent="CanvasLayer/Control" unique_id=646456588]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+offset_right = 80.0
+grow_vertical = 0
+
 [connection signal="value_changed" from="TextureProgressBar" to="." method="_on_TextureProgress_value_changed"]
+[connection signal="button_down" from="CanvasLayer/Control/Button" to="." method="_on_right_button_down"]
+[connection signal="button_up" from="CanvasLayer/Control/Button" to="." method="_on_right_button_up"]
+[connection signal="pressed" from="CanvasLayer/Control/Button" to="." method="_on_button_pressed"]
+[connection signal="button_down" from="CanvasLayer/Control/Button2" to="." method="_on_button_left_down"]
+[connection signal="button_up" from="CanvasLayer/Control/Button2" to="." method="_on_button_left_up"]

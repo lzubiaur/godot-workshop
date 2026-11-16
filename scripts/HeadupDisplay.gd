@@ -34,3 +34,15 @@ func _on_player_step(_step_count):
 func _on_TextureProgress_value_changed(value):
 	if value <= 0:
 		emit_signal("gameplay_timeout")
+
+func _on_right_button_down() -> void:
+	Input.action_press("Jump")
+
+func _on_right_button_up() -> void:
+	Input.action_release("Jump")
+
+func _on_button_left_down() -> void:
+	Input.action_press("Dash")
+
+func _on_button_left_up() -> void:
+	Input.action_release("Dash")
