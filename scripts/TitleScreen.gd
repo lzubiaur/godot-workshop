@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasLayer
 
 func _ready():
 	# Lets Enter/Space press the button on desktop
