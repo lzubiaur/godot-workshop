@@ -68,6 +68,5 @@ grow_vertical = 0
 [connection signal="value_changed" from="TextureProgressBar" to="." method="_on_TextureProgress_value_changed"]
 [connection signal="button_down" from="CanvasLayer/Control/Button" to="." method="_on_right_button_down"]
 [connection signal="button_up" from="CanvasLayer/Control/Button" to="." method="_on_right_button_up"]
-[connection signal="pressed" from="CanvasLayer/Control/Button" to="." method="_on_button_pressed"]
 [connection signal="button_down" from="CanvasLayer/Control/Button2" to="." method="_on_button_left_down"]
 [connection signal="button_up" from="CanvasLayer/Control/Button2" to="." method="_on_button_left_up"]

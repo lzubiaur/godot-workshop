@@ -36,10 +36,6 @@ window/handheld/orientation="portrait"
 window/stretch/shrink="1"
 window/handheld/emulate_touchscreen=true
 
-[editor_plugins]
-
-enabled=PackedStringArray("codeandweb.texturepacker")
-
 [input]
 
 Jump={

@@ -128,13 +128,14 @@ func start_moving_player_along_path(steps):
 	for point in steps:
 		curve.add_point(Math.to_iso(point))
 	
-	var tween = get_tree().create_tween()
+	# Bound to this node so the tween is freed with the scene on respawn
+	var tween = create_tween()
 	tween.tween_method(_on_moving_along_path, 0.0, 1.0, global.STEP_DURATION) \
 		.set_trans(Tween.TRANS_CUBIC) \
 		.set_ease(Tween.EASE_IN_OUT)
-	
-	tween.tween_callback(_on_moving_along_path_finished.bind(steps.back())) \
-		.set_delay(global.STEP_DURATION)
+
+	# Tweeners run in sequence: the callback fires as soon as the move ends
+	tween.tween_callback(_on_moving_along_path_finished.bind(steps.back()))
 	
 	set_player_look_at(steps.back())
 	player.jump()
@@ -173,8 +174,8 @@ func acknowledge_step(step_count):
 		global.high = global.score
 
 func respawn():
-	# for some reasons we have to clear the path before respawn
-	# maybe because baked points are still cached?
+	# The Curve2D is a sub-resource of Game.tscn and is shared with the
+	# reloaded scene, so clear it to avoid carrying old points over
 	path.curve.clear_points()
 	var _err := get_tree().reload_current_scene()
 
