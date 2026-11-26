@@ -80,4 +80,3 @@ update_rotation = false
 update_scale = false
 
 [connection signal="gameover" from="." to="Player" method="_on_gameover"]
-[connection signal="gameplay_timeout" from="HUD" to="." method="_on_HUD_gameplay_timeout"]

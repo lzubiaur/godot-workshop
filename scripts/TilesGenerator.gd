@@ -28,8 +28,11 @@ func add_new_tile_to_map(position, tileType):
 	if tileType != TileType.Empty:
 		emit_signal("new_tile", position, tileType)
 
+# Chances set by the Game from the difficulty (0 to 1)
+var gap_chance = 0.4		# Chance that a tile after a ground tile is a gap (hole or empty)
+var enemy_chance = 0.1		# Chance of a crab on each tile that passes the spawn rules
+
 # Crab spawn rules
-const ENEMY_SPAWN_ODDS = 0.3		# roll_dice() odds: 0.9 = 10% chance on each valid tile
 const SAFE_START_TILES = 5			# No crab on the first tiles of the run
 const MIN_ENEMY_SPACING = 4			# Minimum number of tiles between two crabs
 
@@ -45,12 +48,12 @@ func can_spawn_enemy(progress, prevType, tileType, nextType) -> bool:
 		and nextType == TileType.Ground
 
 func spawn_new_enemy(position, progress, prevType, tileType, nextType):
-	if can_spawn_enemy(progress, prevType, tileType, nextType) and roll_dice(ENEMY_SPAWN_ODDS):
+	if can_spawn_enemy(progress, prevType, tileType, nextType) and randf() < enemy_chance:
 		last_enemy_progress = progress
 		emit_signal("spawn_enemy", position)
 
 func generate_next_tile_type(_pos, prevType):
-	if prevType != TileType.Hole and prevType != TileType.Empty and roll_dice(0.6):
+	if prevType != TileType.Hole and prevType != TileType.Empty and randf() < gap_chance:
 		return choose(0.7, TileType.Hole, TileType.Empty)
 	else:
 		return TileType.Ground

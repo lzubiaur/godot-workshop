@@ -1,11 +1,8 @@
 extends Node2D
 
-@onready var background = $BackgroundSprite
-
 func _ready():
-	# background.scale = Vector2(0.5, 0.5)
-	pass
+	# Lets Enter/Space press the button on desktop
+	$StartButton.grab_focus()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _on_start_button_pressed():
+	get_tree().change_scene_to_file("res://scenes/Game.tscn")

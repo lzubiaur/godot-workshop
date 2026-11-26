@@ -1,39 +1,58 @@
 # HeadupDisplay.gd
-# Gameplay timeout and extra time is handle here for convenience
+# Displays the game state: level, remaining time, level-up popup and game over panel.
+# It only displays things: the game rules (timer, levels...) live in Game.gd
 extends CanvasLayer
 
-signal gameplay_timeout
+@onready var game = global.get_game()
+@onready var time_bar = $TextureProgressBar
+@onready var level_label = $LevelLabel
+@onready var level_up_label = $LevelUpLabel
+@onready var level_up_sound = $LevelUpSound
+@onready var game_over_panel = $GameOverPanel
+@onready var touch_controls = $CanvasLayer
 
-@onready var tween
-@onready var idle = global.gameplay.idle
-@onready var extra_time = global.gameplay.extra_time
-@onready var min_extra_time = global.gameplay.min_extra_time
+var level_up_tween: Tween
 
 func _ready():
-	global.get_game().connect("gameover", Callable(self, "_on_gameover"))
-	global.get_game().connect("player_step", Callable(self, "_on_player_step"))
-	set_timeout(global.gameplay.idle)
+	game.gameover.connect(_on_gameover)
+	game.level_up.connect(_on_level_up)
+	level_up_label.hide()
+	game_over_panel.hide()
+	update_level_label(game.level)
 
-func set_timeout(time):
-	if tween:
-		tween.kill()
-	tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property($TextureProgressBar, "value", 0, time).from((time / global.MAX_IDLE_TIMEOUT) * 100)
-	
-func get_remaining_time():
-	return global.MAX_IDLE_TIMEOUT * ($TextureProgressBar.value / 100)
+func _process(_delta):
+	time_bar.value = game.time_left / game.max_time * 100.0
 
-func add_extra_time(time):
-	var new_timeout = min(get_remaining_time() + time, global.MAX_IDLE_TIMEOUT)
-	set_timeout(new_timeout)
-	
-func _on_player_step(_step_count):
-	var new_extra_time = extra_time + ((extra_time - min_extra_time) * (1 - global.gameplay.difficulty))
-	add_extra_time(new_extra_time)
+func update_level_label(level):
+	level_label.text = "LEVEL %d" % level
 
-func _on_TextureProgress_value_changed(value):
-	if value <= 0:
-		emit_signal("gameplay_timeout")
+func _on_level_up(level):
+	update_level_label(level)
+
+	# Show "LEVEL X" in the middle of the screen, then fade it out
+	level_up_label.text = "LEVEL %d" % level
+	level_up_label.modulate.a = 1.0
+	level_up_label.show()
+	if level_up_tween:
+		level_up_tween.kill()
+	level_up_tween = create_tween()
+	level_up_tween.tween_interval(0.6)
+	level_up_tween.tween_property(level_up_label, "modulate:a", 0.0, 0.4)
+	level_up_tween.tween_callback(level_up_label.hide)
+
+	# No sound asset yet: set the stream of LevelUpSound in HUD.tscn
+	if level_up_sound.stream:
+		level_up_sound.play()
+
+func _on_gameover():
+	touch_controls.hide()
+
+func show_game_over(score, best):
+	$GameOverPanel/GameOverLabel.text = "SCORE %d\nBEST %d\n\nTAP TO RETRY" % [score, best]
+	game_over_panel.show()
+
+func _on_game_over_panel_pressed() -> void:
+	game.retry()
 
 func _on_right_button_down() -> void:
 	Input.action_press("Jump")

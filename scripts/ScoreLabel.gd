@@ -11,6 +11,8 @@ func update_score():
 	bounce()
 
 func bounce():
+	# Scale from the right edge, where the right-aligned text is
+	pivot_offset = Vector2(size.x, size.y / 2.0)
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1.3, 1.3), 0.1)
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.15)

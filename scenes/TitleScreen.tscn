@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bfrwm0dvl3367"]
+[gd_scene load_steps=17 format=3 uid="uid://bfrwm0dvl3367"]
 
 [ext_resource type="Script" path="res://scripts/TitleScreen.gd" id="1_jmw2m"]
+[ext_resource type="FontFile" uid="uid://b0smndqf5vp3u" path="res://assets/fonts/BoxyBold_16px.fnt" id="15_font"]
 [ext_resource type="Texture2D" uid="uid://dd2pr0o46xamy" path="res://assets/title_screen_1.png" id="1_twc2f"]
 [ext_resource type="Texture2D" uid="uid://cbwltmg0b5ft" path="res://assets/idle/idle_01.png" id="3_7d7sw"]
 [ext_resource type="Texture2D" uid="uid://bp5g7r1hji1y6" path="res://assets/idle/idle_02.png" id="4_576qr"]
@@ -69,7 +70,7 @@ script = ExtResource("1_jmw2m")
 
 [node name="BackgroundSprite" type="Sprite2D" parent="."]
 position = Vector2(96, 120)
-scale = Vector2(-0.2, 0.314286)
+scale = Vector2(0.314286, 0.314286)
 texture = ExtResource("1_twc2f")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -81,3 +82,13 @@ offset = Vector2(0, -20)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimatedSprite2D")
+
+[node name="StartButton" type="Button" parent="."]
+offset_left = 46.0
+offset_top = 280.0
+offset_right = 146.0
+offset_bottom = 308.0
+theme_override_fonts/font = ExtResource("15_font")
+text = "START"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

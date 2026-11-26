@@ -16,6 +16,7 @@ const Math = preload('res://scripts/Math.gd')
 @export var delay: float = 0.0				# Extra wait before the first hop, in seconds
 
 var tile: Vector2				# Tile currently occupied (grid coords)
+var autostart := true			# False: wait for start_patrol() (before the game starts)
 
 var _patrol: Array[Vector2] = []	# All the tiles between start and end
 var _index := 0						# Index of the current tile in _patrol
@@ -35,7 +36,12 @@ func _ready():
 	_step_timer = Timer.new()
 	_step_timer.timeout.connect(_hop)
 	add_child(_step_timer)
-	_step_timer.start(step_interval + delay)
+	if autostart:
+		start_patrol()
+
+func start_patrol():
+	if _step_timer.is_stopped():
+		_step_timer.start(step_interval + delay)
 
 func _build_patrol():
 	_patrol.clear()
