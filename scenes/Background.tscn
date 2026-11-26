@@ -1,8 +1,7 @@
-[gd_scene format=3 uid="uid://ctdfodkog1mij"]
+[gd_scene format=3 uid="uid://covcuynbwr600"]
 
-[ext_resource type="Texture2D" uid="uid://b774l0h8d8cr8" path="res://assets/cactus.png" id="1_nou1y"]
-[ext_resource type="Texture2D" uid="uid://dn7wacixfgeys" path="res://assets/rock.png" id="2_dnxxv"]
-[ext_resource type="Script" path="res://scripts/Background.gd" id="3_dnxxv"]
+[ext_resource type="Texture2D" uid="uid://b774l0h8d8cr8" path="res://assets/backgroun_1.png" id="1_nou1y"]
+[ext_resource type="Texture2D" uid="uid://dn7wacixfgeys" path="res://assets/desert_backgroun_01.png" id="2_dnxxv"]
 
 [node name="Background" type="Node2D" unique_id=2039309105]
 
@@ -14,4 +13,3 @@ texture = ExtResource("1_nou1y")
 [node name="Rock" type="Sprite2D" parent="." unique_id=1770876441]
 position = Vector2(-21, 25)
 texture = ExtResource("2_dnxxv")
-script = ExtResource("3_dnxxv")
