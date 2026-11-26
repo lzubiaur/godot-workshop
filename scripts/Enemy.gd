@@ -1,53 +1,73 @@
 # Enemy.gd
+# A crab that patrols back and forth between two tiles, hopping one tile per beat.
+# Its position is tracked in grid (cartesian) coordinates so hits are decided
+# per tile by the Game, not by collision shapes.
 extends Area2D
 
-signal finished
+# Emitted when the crab starts a hop: the target tile is occupied from that moment
+signal tile_entered(enemy: Node, tile: Vector2)
 
 const Math = preload('res://scripts/Math.gd')
 
-@export var start: Vector2 = Vector2(0, 0): get = _get_start, set = _set_start
-@export var end: Vector2 = Vector2(0, 0): get = _get_end, set = _set_end
-@export var velocity: int = 10: get = _get_velocity, set = _set_velocity
-@export var delay: int = 0: get = _get_delay, set = _set_delay
+@export var start: Vector2 = Vector2.ZERO	# First patrol tile (grid coords)
+@export var end: Vector2 = Vector2.ZERO		# Last patrol tile (grid coords)
+@export var step_interval: float = 0.6		# Time between two hops, in seconds
+@export var hop_duration: float = 0.15		# Duration of the hop animation, in seconds
+@export var delay: float = 0.0				# Extra wait before the first hop, in seconds
+
+var tile: Vector2				# Tile currently occupied (grid coords)
+
+var _patrol: Array[Vector2] = []	# All the tiles between start and end
+var _index := 0						# Index of the current tile in _patrol
+var _direction := 1					# 1 = towards end, -1 = towards start
+var _step_timer: Timer
+var _hop_tween: Tween
 
 func _ready():
-	move_along_path()
+	_build_patrol()
+	# Start somewhere random on the patrol so crabs don't all look the same
+	_index = randi() % _patrol.size()
+	_direction = 1 if randf() < 0.5 else -1
+	tile = _patrol[_index]
+	# Set the position now, or the crab is drawn at (0, 0) for one frame
+	position = Math.to_iso(tile)
 
-func move_along_path():
-	var p_start = Math.to_iso(start)
-	var p_end = Math.to_iso(end)
-	var length = p_start.distance_to(p_end)
-	var duration = length / velocity
-	var tween = create_tween()
-	# don't defer setting the position to the next update (tween) or it will enter the scene at 0,0
-	position = p_start
-	tween.tween_property(self, 'position', p_end, duration).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_LINEAR)
-	tween.tween_callback(on_move_along_path_callback)
-	tween.play()
+	_step_timer = Timer.new()
+	_step_timer.timeout.connect(_hop)
+	add_child(_step_timer)
+	_step_timer.start(step_interval + delay)
 
-func on_move_along_path_callback():
-	emit_signal('finished')
+func _build_patrol():
+	_patrol.clear()
+	var offset := end - start
+	var count := int(max(abs(offset.x), abs(offset.y)))
+	var direction: Vector2 = offset / count if count > 0 else Vector2.ZERO
+	for i in count + 1:
+		_patrol.append(start + direction * i)
 
-func _set_start(value):
-	start = value
+func _hop():
+	# After the first (possibly delayed) hop, keep a regular beat
+	_step_timer.wait_time = step_interval
+	if _patrol.size() < 2:
+		return
 
-func _get_start():
-	return start
+	# Turn around at both ends of the patrol
+	var next_index := _index + _direction
+	if next_index < 0 or next_index >= _patrol.size():
+		_direction = -_direction
+		next_index = _index + _direction
+	_index = next_index
+	tile = _patrol[_index]
+	tile_entered.emit(self, tile)
 
-func _set_end(value):
-	end = value
+	_hop_tween = create_tween()
+	_hop_tween.tween_property(self, 'position', Math.to_iso(tile), hop_duration) \
+		.set_trans(Tween.TRANS_QUAD) \
+		.set_ease(Tween.EASE_OUT)
 
-func _get_end():
-	return end
-
-func _set_velocity(value):
-	velocity = value
-
-func _get_velocity():
-	return velocity
-
-func _set_delay(value):
-	delay = value
-
-func _get_delay():
-	return delay
+# Stop moving, e.g. on game over so the player can see what hit them
+func freeze():
+	_step_timer.stop()
+	if _hop_tween:
+		_hop_tween.kill()
+	$AnimatedSprite2D.pause()

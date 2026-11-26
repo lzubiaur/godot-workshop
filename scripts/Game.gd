@@ -18,19 +18,35 @@ var tiles_gen = TilesGenerator.new()
 var isGameover = false
 var isInvicible = false
 
-var moving = false
+var moving = false		# True while the player is in the air (from takeoff to landing)
 var cached_inputs = {
 	jump = false,
 	dash = false
 }
+
+# Crab tuning
+@export var crab_patrol_range := 2		# Tiles a crab can walk on each side of its spawn tile
+@export var crab_grace_time := 0.1		# Time to escape when a crab steps onto the player's tile
+
+var player_tile := Vector2.ZERO			# Tile the player stands on (grid coords)
+var enemies = []
+var crab_grace_timer: Timer
 
 func _enter_tree():
 	randomize()
 	initialize_level_parameters()	
 
 func _ready():
+	initialize_crab_grace_timer()
 	initialize_tiles_generator()
 	start_game()
+
+func initialize_crab_grace_timer():
+	crab_grace_timer = Timer.new()
+	crab_grace_timer.one_shot = true
+	crab_grace_timer.wait_time = crab_grace_time
+	crab_grace_timer.timeout.connect(_on_crab_grace_timeout)
+	add_child(crab_grace_timer)
 
 func initialize_tiles_generator():
 	add_child(tiles_gen)
@@ -75,15 +91,30 @@ func set_player_look_at(point):
 
 func on_spawn_enemy(position):
 	var enemy = Enemy.instantiate()
-	enemy.velocity = 50
 	enemy.z_index = 10
-	enemy.start = position - Vector2(3, 0)
-	enemy.end = position + Vector2(3, 0)
-	enemy.connect('body_entered', Callable(self, '_on_collided_with_enemy'))
+	enemy.start = position - Vector2(crab_patrol_range, 0)
+	enemy.end = position + Vector2(crab_patrol_range, 0)
+	enemy.tile_entered.connect(_on_enemy_tile_entered)
+	enemies.append(enemy)
 	tileMap.call_deferred('add_child', enemy)
 
-func _on_collided_with_enemy(_other: Node):
-	if not moving:
+func is_enemy_on_tile(tile: Vector2) -> bool:
+	for enemy in enemies:
+		# A crab that hasn't entered the tree yet has no tile
+		if enemy.is_inside_tree() and enemy.tile == tile:
+			return true
+	return false
+
+# A crab started hopping onto a tile
+func _on_enemy_tile_entered(_enemy: Node, tile: Vector2):
+	if isGameover or moving or tile != player_tile:
+		return
+	# The crab walked onto the standing player: give them a short time to escape
+	if crab_grace_timer.is_stopped():
+		crab_grace_timer.start()
+
+func _on_crab_grace_timeout():
+	if not moving and is_enemy_on_tile(player_tile):
 		game_over()
 
 func _process(_delta):
@@ -122,6 +153,10 @@ func process_inputs() -> Array:
 	return steps
 
 func start_moving_player_along_path(steps):
+	# The player is in the air from now until landing: crabs can't hit them
+	moving = true
+	crab_grace_timer.stop()
+
 	var curve = path.curve
 	curve.clear_points()
 	curve.add_point(player.position)
@@ -146,7 +181,6 @@ func get_next_position_on_path(t: float) -> Vector2:
 	return path.curve.get_point_position(point_index)
 
 func _on_moving_along_path(value):
-	moving = true
 	player.player_look_at(get_next_position_on_path(value))
 	path_follow.progress_ratio = value
 
@@ -158,8 +192,12 @@ func check_player_position_on_map(position):
 
 func _on_moving_along_path_finished(destination):
 	moving = false
+	player_tile = destination
 	set_player_look_at(tiles_gen.front())
 	check_player_position_on_map(destination)
+	# Landing on a crab (or on a tile a crab is hopping onto) is game over
+	if is_enemy_on_tile(destination):
+		game_over()
 
 func acknowledge_step(step_count):
 	global.score += step_count
@@ -183,6 +221,10 @@ func game_over():
 	if isGameover or isInvicible:
 		return
 	isGameover = true
+	# Freeze the crabs so the player can see what happened
+	for enemy in enemies:
+		if enemy.is_inside_tree():
+			enemy.freeze()
 	emit_signal("gameover")
 	# delay the scene respawn for 1 second
 	await get_tree().create_timer(1.0).timeout
