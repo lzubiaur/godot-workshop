@@ -29,7 +29,7 @@ func add_new_tile_to_map(position, tileType):
 		emit_signal("new_tile", position, tileType)
 
 # Crab spawn rules
-const ENEMY_SPAWN_ODDS = 0.9		# roll_dice() odds: 0.9 = 10% chance on each valid tile
+const ENEMY_SPAWN_ODDS = 0.3		# roll_dice() odds: 0.9 = 10% chance on each valid tile
 const SAFE_START_TILES = 5			# No crab on the first tiles of the run
 const MIN_ENEMY_SPACING = 4			# Minimum number of tiles between two crabs
 
